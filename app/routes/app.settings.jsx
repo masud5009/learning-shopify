@@ -8,9 +8,8 @@ import {
   Text,
   Button
 } from "@shopify/polaris";
-import { useState } from "react";
-import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { useEffect, useState } from "react";
+import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
 
 export async function loader() {
   //get data from database or api
@@ -18,19 +17,39 @@ export async function loader() {
     name: "data come from database or api",
     description: "this description also come from database or api"
   };
-  return json(data);
+  return data;
 }
 
 
-export async function action() {
-  // updates persistent data
+export async function action({ request }) {
+  const formData = await request.formData();
+  const name = String(formData.get("name") || "");
+  const description = String(formData.get("description") || "");
+
+  //save data to database or api
+  return {
+    ok: true,
+    saved: {
+      name,
+      description,
+    },
+  };
 }
 
 
 export default function Settings() {
   const settingData = useLoaderData();
+  const actionData = useActionData();
+  const navigation = useNavigation();
 
   const [formState, setFormSaved] = useState(settingData);
+  const isSubmitting = navigation.state === "submitting";
+
+  useEffect(() => {
+    if (actionData?.saved) {
+      setFormSaved(actionData.saved);
+    }
+  }, [actionData]);
 
   return (
     <Page
@@ -63,11 +82,33 @@ export default function Settings() {
           </Box>
 
           <Card roundedAbove="sm">
-            <BlockStack gap="400">
-              <TextField label="App Name" onChange={(value) => setFormSaved({ ...formState, name: value })} autoComplete="off" value={formState.name} />
-              <TextField label="App Description" onChange={(value) => setFormSaved({ ...formState, description: value })} autoComplete="off" value={formState.description} />
-              <Button submit={true}>Save</Button>
-            </BlockStack>
+            <Form method="post">
+              <BlockStack gap="400">
+                {actionData?.ok ? (
+                  <Text as="p" variant="bodyMd">
+                    Settings saved successfully.
+                  </Text>
+                ) : null}
+
+                <TextField
+                  label="App Name"
+                  name="name"
+                  onChange={(value) => setFormSaved({ ...formState, name: value })}
+                  autoComplete="off"
+                  value={formState.name}
+                />
+                <TextField
+                  label="App Description"
+                  name="description"
+                  onChange={(value) =>
+                    setFormSaved({ ...formState, description: value })
+                  }
+                  autoComplete="off"
+                  value={formState.description}
+                />
+                <Button submit loading={isSubmitting}>Save</Button>
+              </BlockStack>
+            </Form>
           </Card>
         </InlineGrid>
       </BlockStack>

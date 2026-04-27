@@ -1,4 +1,9 @@
+import polarisStylesHref from "@shopify/polaris/build/esm/styles.css?url";
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
+
+export const links = () => {
+  return [{ rel: "stylesheet", href: polarisStylesHref }];
+};
 
 export default function App() {
   return (
