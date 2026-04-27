@@ -11,29 +11,43 @@ import {
 import { useEffect, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
 
+//import db connection
+import db from "../db.server";
+
 export async function loader() {
   //get data from database or api
+  let setting = await db.settings.findFirst();
+
   let data = {
-    name: "data come from database or api",
-    description: "this description also come from database or api"
+    name: setting?.name || "",
+    description: setting?.description || ""
   };
   return data;
 }
 
 
 export async function action({ request }) {
-  const formData = await request.formData();
-  const name = String(formData.get("name") || "");
-  const description = String(formData.get("description") || "");
+  let setting = await request.formData();
+  setting = Object.fromEntries(setting);
 
   //save data to database or api
-  return {
-    ok: true,
-    saved: {
-      name,
-      description,
+  await db.settings.upsert({
+    where: {
+      id: '1'
     },
-  };
+    update: {
+      id: '1',
+      name: setting.name,
+      description: setting.description
+    },
+    create: {
+      id: '1',
+      name: setting.name,
+      description: setting.description
+    }
+  });
+
+  return { saved: setting };
 }
 
 
@@ -84,7 +98,7 @@ export default function Settings() {
           <Card roundedAbove="sm">
             <Form method="post">
               <BlockStack gap="400">
-                {actionData?.ok ? (
+                {actionData?.saved ? (
                   <Text as="p" variant="bodyMd">
                     Settings saved successfully.
                   </Text>
