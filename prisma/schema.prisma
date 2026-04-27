@@ -32,3 +32,9 @@ model Session {
   refreshToken        String?
   refreshTokenExpires DateTime?
 }
+
+model Settings {
+  id            String    @id
+  name          String
+  description   String?
+}
