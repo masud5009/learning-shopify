@@ -1,57 +1,26 @@
-<div class="delivery-badge" style="background: {{ block.settings.bg_color }};">
-  {% if block.settings.heading != blank %}
-    <h3>{{ block.settings.heading }}</h3>
-  {% endif %}
+{% assign app_settings = shop.metafields.trust_badge.settings.value %}
 
-  {% if block.settings.line_1 != blank %}
-    <p>{{ block.settings.line_1 }}</p>
-  {% endif %}
+{% if app_settings.enabled %}
+  <div class="delivery-badge" style="background: {{ app_settings.bgColor }};">
 
-  {% if block.settings.line_2 != blank %}
-    <p>{{ block.settings.line_2 }}</p>
-  {% endif %}
+    {% if app_settings.heading != blank %}
+      <h3>{{ app_settings.heading }}</h3>
+    {% endif %}
 
-  {% if block.settings.line_3 != blank %}
-    <p>{{ block.settings.line_3 }}</p>
-  {% endif %}
-</div>
+    {% if product and product.metafields.custom.trust_badge_message != blank %}
+      <p>{{ product.metafields.custom.trust_badge_message }}</p>
+    {% elsif app_settings.message != blank %}
+      <p>{{ app_settings.message }}</p>
+    {% endif %}
+
+  </div>
+{% endif %}
 
 {% schema %}
 {
   "name": "Trust Badge",
   "target": "section",
   "stylesheet": "delivery-badge.css",
-  "settings": [
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "Why shop with us?"
-    },
-    {
-      "type": "text",
-      "id": "line_1",
-      "label": "Line 1",
-      "default": "🚚 Free delivery available"
-    },
-    {
-      "type": "text",
-      "id": "line_2",
-      "label": "Line 2",
-      "default": "🔒 Secure checkout"
-    },
-    {
-      "type": "text",
-      "id": "line_3",
-      "label": "Line 3",
-      "default": "↩️ 7-day return"
-    },
-    {
-      "type": "color",
-      "id": "bg_color",
-      "label": "Background color",
-      "default": "#ffffff"
-    }
-  ]
+  "settings": []
 }
 {% endschema %}
