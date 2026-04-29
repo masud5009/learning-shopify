@@ -22,6 +22,8 @@ export async function loader() {
   let data = {
     badge_heading: setting?.badge_heading || "",
     default_badge_message: setting?.default_badge_message || "",
+    badge_2: setting?.badge_2 || "",
+    badge_3: setting?.badge_3 || "",
     bg_color: setting?.bg_color || "",
     is_enabled: setting?.is_enabled || true
   };
@@ -42,6 +44,8 @@ export async function action({ request }) {
     update: {
       badge_heading: setting.badge_heading,
       default_badge_message: setting.default_badge_message,
+      badge_2: setting?.badge_2 || "",
+      badge_3: setting?.badge_3 || "",
       bg_color: setting.bg_color,
       is_enabled: isEnabled,
     },
@@ -49,6 +53,8 @@ export async function action({ request }) {
       id: "1",
       badge_heading: setting.badge_heading,
       default_badge_message: setting.default_badge_message,
+      badge_2: setting?.badge_2 || "",
+      badge_3: setting?.badge_3 || "",
       bg_color: setting.bg_color,
       is_enabled: isEnabled,
     },
@@ -70,7 +76,11 @@ export async function action({ request }) {
   const metafieldValue = JSON.stringify({
     enabled: isEnabled,
     heading: setting.badge_heading,
-    message: setting.default_badge_message,
+    badges: [
+      setting.default_badge_message,
+      setting.badge_2,
+      setting.badge_3,
+    ],
     bgColor: setting.bg_color,
   });
 
@@ -184,6 +194,23 @@ export default function Settings() {
                   }
                   autoComplete="off"
                   value={formState.default_badge_message}
+                />
+                <TextField
+                  label="Badge 2"
+                  name="badge_2"
+                  onChange={(value) =>
+                    setFormSaved({ ...formState, badge_2: value })
+                  }
+                  value={formState.badge_2 || ""}
+                />
+
+                <TextField
+                  label="Badge 3"
+                  name="badge_3"
+                  onChange={(value) =>
+                    setFormSaved({ ...formState, badge_3: value })
+                  }
+                  value={formState.badge_3 || ""}
                 />
                 <TextField
                   label="Background Color"

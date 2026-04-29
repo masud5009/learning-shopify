@@ -34,10 +34,11 @@ model Session {
 }
 
 model Settings {
-  id                     String  @id
-
-  badge_heading          String?
-  default_badge_message  String?
-  bg_color               String?
-  is_enabled             Boolean @default(true)
+  id                      String  @id
+  badge_heading           String?
+  default_badge_message   String?
+  badge_2                 String?   // 👈 add
+  badge_3                 String?   // 👈 add
+  bg_color                String?
+  is_enabled              Boolean?
 }

@@ -9,9 +9,13 @@
 
     {% if product and product.metafields.custom.trust_badge_message != blank %}
       <p>{{ product.metafields.custom.trust_badge_message }}</p>
-    {% elsif app_settings.message != blank %}
-      <p>{{ app_settings.message }}</p>
     {% endif %}
+
+    {% for badge in app_settings.badges %}
+      {% if badge != blank %}
+        <p>{{ badge }}</p>
+      {% endif %}
+    {% endfor %}
 
   </div>
 {% endif %}
