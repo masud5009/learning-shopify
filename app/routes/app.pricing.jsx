@@ -1,37 +1,89 @@
+import {
+  Page,
+  Layout,
+  Card,
+  Text,
+  BlockStack,
+  InlineStack,
+  Button,
+  List,
+  Badge,
+  Box,
+} from "@shopify/polaris";
+
 export default function PricingPage() {
   return (
-    <s-page heading="Pricing">
-      <s-section heading="Pricing">
-        <s-paragraph>
-          The app template comes with a settings page which demonstrates how
-          to create a settings page within app navigation using{" "}
-          <s-link
-            href="https://shopify.dev/docs/apps/tools/app-bridge"
-            target="_blank"
-          >
-            App Bridge
-          </s-link>
-          .
-        </s-paragraph>
-        <s-paragraph>
-          To create your own page and have it show up in the app navigation, add
-          a page inside <code>app/routes</code>, and a link to it in the{" "}
-          <code>&lt;ui-nav-menu&gt;</code> component found in{" "}
-          <code>app/routes/app.jsx</code>.
-        </s-paragraph>
-      </s-section>
-      <s-section slot="aside" heading="Resources">
-        <s-unordered-list>
-          <s-list-item>
-            <s-link
-              href="https://shopify.dev/docs/apps/design-guidelines/navigation#app-nav"
-              target="_blank"
-            >
-              App nav best practices
-            </s-link>
-          </s-list-item>
-        </s-unordered-list>
-      </s-section>
-    </s-page>
+    <Page title="Pricing">
+      <Layout>
+        <Layout.Section>
+          <Box paddingBlockEnd="600">
+            <BlockStack gap="200">
+              <Text as="h1" variant="headingXl">
+                Choose your plan
+              </Text>
+              <Text as="p" tone="subdued">
+                Start free, upgrade when you need advanced badge rules.
+              </Text>
+            </BlockStack>
+          </Box>
+
+          <InlineStack gap="500" align="center" blockAlign="stretch">
+            <Card>
+              <Box padding="500" minWidth="320px">
+                <BlockStack gap="500">
+                  <InlineStack align="space-between">
+                    <Text as="h2" variant="headingLg">Free</Text>
+                    <Badge tone="success">Current</Badge>
+                  </InlineStack>
+
+                  <BlockStack gap="100">
+                    <Text as="p" variant="heading2xl">$0</Text>
+                    <Text as="p" tone="subdued">per month</Text>
+                  </BlockStack>
+
+                  <List>
+                    <List.Item>Basic trust badge</List.Item>
+                    <List.Item>3 badge messages</List.Item>
+                    <List.Item>Theme app extension</List.Item>
+                    <List.Item>Product-specific message</List.Item>
+                  </List>
+
+                  <Button disabled fullWidth>
+                    Current plan
+                  </Button>
+                </BlockStack>
+              </Box>
+            </Card>
+
+            <Card>
+              <Box padding="500" minWidth="320px">
+                <BlockStack gap="500">
+                  <InlineStack align="space-between">
+                    <Text as="h2" variant="headingLg">Pro</Text>
+                    <Badge tone="attention">Recommended</Badge>
+                  </InlineStack>
+
+                  <BlockStack gap="100">
+                    <Text as="p" variant="heading2xl">$5</Text>
+                    <Text as="p" tone="subdued">per month</Text>
+                  </BlockStack>
+
+                  <List>
+                    <List.Item>Unlimited badges</List.Item>
+                    <List.Item>Price-based rules</List.Item>
+                    <List.Item>Product-specific messages</List.Item>
+                    <List.Item>Priority support</List.Item>
+                  </List>
+
+                  <Button variant="primary" fullWidth>
+                    Upgrade to Pro
+                  </Button>
+                </BlockStack>
+              </Box>
+            </Card>
+          </InlineStack>
+        </Layout.Section>
+      </Layout>
+    </Page>
   );
 }
