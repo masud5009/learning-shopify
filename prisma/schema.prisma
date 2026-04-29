@@ -41,4 +41,9 @@ model Settings {
   badge_3                 String?   // 👈 add
   bg_color                String?
   is_enabled              Boolean?
+
+  premium_threshold       Int?
+  premium_message         String?
+  budget_threshold        Int?
+  budget_message          String?
 }

@@ -1,14 +1,20 @@
 {% assign app_settings = shop.metafields.trust_badge.settings.value %}
 
-{% if app_settings.enabled %}
-  <div class="delivery-badge" style="background: {{ app_settings.bgColor }};">
+{% if app_settings.enabled and product %}
+  {% assign price = product.price | divided_by: 100 %}
 
+  <div class="delivery-badge" style="background: {{ app_settings.bgColor }};">
     {% if app_settings.heading != blank %}
       <h3>{{ app_settings.heading }}</h3>
     {% endif %}
 
-    {% if product and product.metafields.custom.trust_badge_message != blank %}
-      <p>{{ product.metafields.custom.trust_badge_message }}</p>
+    {% assign premium_rule = app_settings.thresholds[0] %}
+    {% assign budget_rule = app_settings.thresholds[1] %}
+
+    {% if price >= premium_rule.threshold %}
+      <p>{{ premium_rule.message }}</p>
+    {% elsif price <= budget_rule.threshold %}
+      <p>{{ budget_rule.message }}</p>
     {% endif %}
 
     {% for badge in app_settings.badges %}
@@ -16,7 +22,6 @@
         <p>{{ badge }}</p>
       {% endif %}
     {% endfor %}
-
   </div>
 {% endif %}
 
